@@ -1,16 +1,7 @@
-# Counting, Permutations, Combinations
+## 📊 Statistics Notebooks (`stat_notebooks/`)
+- **Permutation_Combination.ipynb**  
+  Implements factorial, permutations (P(n,r)), combinations (C(n,r)) from scratch with full edge-case handling. Verified against `math.perm` and `math.comb`.
 
-
-## Key Learnings
-- Factorial, permutations (order matters), combinations (order doesn’t)
-- MSE loss gradient derivation using chain rule
-- Numerical gradient verification
-
-## Code Implemented
-- `factorial()` with edge cases
-- `perm()`, `comb()` using factorial
-- `mse_gradient()` with numerical check
-
-## Struggles / Notes
-(Write anything that was tricky – e.g., integer division, gradient sign)
-
+## 📉 Probability & Calculus Notebooks (`prob_notebooks/`)
+- **MSE_gradient_decent.ipynb**  
+  Derives MSE loss gradient analytically and numerically. Includes synthetic linear data, gradient verification (difference < 1e-8), and loss vs weight visualisation.
