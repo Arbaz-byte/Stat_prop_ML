@@ -1,40 +1,62 @@
-# Day 6 – Friday, June 12, 2026
+# Day 6 – June 15, 2026
 
 ## Topic
-Linear Regression on Diabetes Dataset – Solving via the Normal Equation (Closed‑Form Solution)
+Normal Equation for Linear Regression – Medical Insurance Cost Prediction
 
-## Key Formula
-The normal equation solves for the optimal parameters $\theta$ without iterative gradient descent:
+## Dataset
+Insurance charges (age, sex, bmi, children, smoker, region) from `insurance.csv`.
 
-$$\theta = (X^T X)^{-1} X^T y$$
+## Work Accomplished
+1. Data ingestion and EDA (shape, nulls, data types).
+2. Feature engineering:
+   - Binary encoding (sex, smoker)
+   - One‑hot encoding for region (drop_first to avoid dummy trap)
+   - Target scaling (charges divided by 100 for numerical stability)
+3. Z‑score standardization of features and target using `StandardScaler`.
+4. Added intercept column to feature matrix.
+5. Implemented **Normal Equation** using Moore‑Penrose pseudo‑inverse:
+   \[
+   \theta = (X^T X)^{\dagger} X^T y
+   \]
+6. Train/test split (80/20, random_state=42).
+7. Model evaluation: MSE = 0.22926, R² = 0.78359.
+8. Comparison with `sklearn.linear_model.LinearRegression` – identical predictions (max diff = 0.0).
+9. Cross‑validation (5‑fold) gave mean R² = 0.74686 ± 0.02487.
+10. Residual analysis: homoscedasticity mostly holds, slight pattern at high charges.
+11. Inference pipeline: function `predict_insurance_charges()` that scales new inputs using the original scalers and returns dollar amounts.
 
-Where:
-- $X$ is the design matrix (samples × features, with a column of ones for the intercept)
-- $y$ is the target vector
-- $\theta$ contains the coefficients (including bias)
+## Key Learnings
+- The Normal Equation gives an exact solution without learning rate tuning.
+- Feature scaling is not required for the Normal Equation mathematically, but it improves numerical stability.
+- The dummy variable trap is avoided by dropping one category – otherwise \(X^T X\) becomes singular.
+- Cross‑validation provides a more realistic generalisation estimate than a single train/test split.
 
-For the diabetes dataset (442 samples, 10 features), this yields the best linear fit in one step.
+## Challenges Faced During Implementation
 
-## Implementation
-* **Dataset Loading:** Used `sklearn.datasets.load_diabetes()` to obtain features and target. The dataset contains 10 baseline variables (age, sex, BMI, blood pressure, and six blood serum measurements) for 442 diabetes patients. Target is a quantitative measure of disease progression one year after baseline.
-* **Design Matrix Construction:** Added an intercept column of ones to $X$ so that the normal equation simultaneously solves for bias and coefficients.
-* **Closed‑Form Solution:** Implemented `theta = np.linalg.inv(X.T @ X) @ X.T @ y` using NumPy’s linear algebra module. Added a small regularization term (`1e-8 * np.eye`) to the $X^T X$ matrix to handle near‑singularity.
-* **Performance Comparison:** Compared the normal equation results with scikit‑learn’s `LinearRegression` to validate correctness.
-* **Prediction & Evaluation:** Computed predictions on the training set and evaluated using Mean Squared Error (MSE) and $R^2$ score.
+## 1. **File Path Error**
+- **Problem**: `FileNotFoundError` when reading CSV
+- **Cause**: Working directory was `prob_notebooks`, but data was in parent directory
+- **Solution**: Used relative path `../Data_sets/insurance.csv`
 
-## Results
-* **Optimal Parameters ($\theta$):** Learned coefficients for 10 features + intercept. BMI, serum measurements (s5 – `ltg`), and blood pressure showed the strongest positive influence on disease progression.
-* **Model Performance (training set):**
-  - MSE: $\approx 2900$ (baseline variance of target is large)
-  - $R^2$: $\approx 0.517$ – the model explains about 52% of the variance in disease progression.
-* **Comparison with scikit‑learn:** Coefficients matched up to $10^{-15}$, confirming the implementation.
-* **Timing:** Normal equation solved in $\approx 2$ milliseconds, much faster than gradient descent (which would require hundreds of iterations for this dataset).
+## 2. **Normal Equation Formula Error**
+- **Problem**: `ValueError: matmul dimension mismatch`
+- **Cause**: Used `X @ X.T` instead of `X.T @ X`
+- **Solution**: Corrected formula to: `θ = (X^T X)^(-1) X^T 
 
-## Challenges & Limitations Faced (My Perspective)
-* **Matrix Inversion Stability:** The $X^T X$ matrix for the diabetes dataset is not perfectly conditioned. Computing `np.linalg.inv` directly caused numerical warnings. I added a small Tikhonov regularization (`λ = 1e-8 * I`) to the matrix before inversion, which eliminated instability without altering results meaningfully.
-* **Feature Scaling Awareness:** The normal equation is **not** sensitive to feature scaling (unlike gradient descent) because scaling cancels out in the closed form. However, I realized that the coefficients’ magnitudes reflect the original feature scales, making interpretation less intuitive. I standardized features afterward for better interpretability.
-* **Lack of Built‑In Cross‑Validation:** The normal equation computes the global optimum for the training set but does not provide a way to tune hyperparameters. Overfitting is possible if the dataset has many features relative to samples (not a problem here: 10 features vs 442 samples). For higher‑dimensional data, ridge regression (normal equation with L2 penalty) would be safer.
-* **Computational Cost for Large Datasets:** For datasets with thousands of features, the $O(n^3)$ inversion becomes prohibitively slow. I learned that the normal equation is only feasible when the number of features is modest (e.g., < 10,000).
+## 3. **Array Comparison Error**
+- **Problem**: `ValueError: The truth value of an array with more than one element is ambiguous`
+- **Cause**: Comparing arrays directly with `<` operator
+- **Solution**: Used `.all()` method or `np.allclose()`
+
+## 4. **StandardScaler Dimension Mismatch**
+- **Problem**: `ValueError: X has 8 features, but StandardScaler is expecting 1 features`
+- **Cause**: Used same `scaler` for both X (8 features) and y (1 feature), second fit overwrote it
+- **Solution**: Created separate scalers: `x_scaler` and `y_scaler` Challenges Faced During Implementation
 
 ## Next Steps
-Day 7: Implement Ridge Regression (L2 regularization) using both the normal equation extension and gradient descent. Apply it to the diabetes dataset to see if regularization improves test generalization.
+- Complete documentation and push this notebook.
+- Implement the same logic using SGD and Mini‑Batch GD (already done).
+- July plan: integrate deployment (FastAPI, Docker, cloud).
+
+## Time Spent
+~13 hours (spread over several days due to personal break, but completed on June 15)

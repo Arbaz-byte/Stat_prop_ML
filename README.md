@@ -17,13 +17,14 @@ Daily implementations from scratch, following a structured 12‑month plan to be
 | 3 | June 9 | 2D GD animation, contour plot, probability axioms | [`03_GD_2d_animation.ipynb`](prob_notebooks/03_GD_2D_Animation.ipynb) |
 | 4 | June 10 | SGD from scratch, numerical nudging (Symmetric Difference), LR analysis | [`04_Stochastic_Gradient_Decent.ipynb`](prob_notebooks/04_Stochastic_Gradient_Decent.ipynb) |
 | 5 | June 11 | Mini‑Batch GD, vectorized implementation, batch size & LR sweeps | [`05_Mini_Batch_Gradient_descent.ipynb`](prob_notebooks/05_Mini_Batch_Gradient_descent.ipynb) |
-
+| 6 | June 15 | Normal Equation on Insurance Dataset (Medical Cost Prediction) | [`06_Noraml_equation.ipynb`](prob_notebooks/06_Noraml_equation.ipynb) |
 ## Daily Logs
 - [Day 1](day1.md)
 - [Day 2](day2.md)
 - [Day 3](day3.md)
 - [Day 4](day4.md)
 - [Day 5](day5.md)
+- [Day 6](day6.md)
 
 ## How to Run
 1. Create virtual environment: `python -m venv venv`
@@ -37,3 +38,15 @@ Daily implementations from scratch, following a structured 12‑month plan to be
 - **Learning Rate Research:** Documented the impact of $\alpha$ on convergence stability, including "Numerical Overflow" and "Overshooting" scenarios.
 - **Vectorized Mini‑Batch:** Replaced per‑row loops with matrix operations; added design matrix, shuffling, remainder batch handling, and loss logging.
 - **Hyperparameter Insights:** Found that $\alpha = 0.01$ with batch size $10$ gives smooth convergence; $\alpha = 0.25$ diverges; smaller $\alpha$ underfits within 400 epochs.
+
+
+## Project: Medical Insurance Cost Prediction (Normal Equation)
+
+- **Notebook:** [`06_Noraml_equation.ipynb`](prob_notebooks/06_Noraml_equation.ipynb)
+- **Goal:** Predict medical insurance charges using closed‑form linear regression.
+- **Highlights:**
+  - Cleaned and encoded categorical features.
+  - Applied Z‑score standardisation.
+  - Implemented Normal Equation with pseudo‑inverse.
+  - Achieved R² = 0.78359 on test set, matching scikit‑learn.
+  - Built inference pipeline for new customer data.
