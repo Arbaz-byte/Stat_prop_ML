@@ -21,6 +21,7 @@ Daily implementations from scratch, following a structured 12‑month plan to be
 | 9 | June 16 | Locally Weighted Regression (LWR) from scratch | [`07_locally_weighted_regression.ipynb`](prob_notebooks/07_locally_weighted_regression.ipynb) |
 | 10 | June 17 | Logistic Regression from scratch (binary classification) | [`08_logistic_regression.ipynb`](prob_notebooks/08_binomial_logistic_regression.ipynb) |
 | 11 | June 23 | Logistic Regression from scratch (Multinomial classification) | ['09_Mutinomial_logistic_regression.ipynb'](prob_notebooks/09_Mutinomial_logistic_regression.ipynb) |
+|12 | July 4 | Perceptron Algorithum from scratch | ['10_Perceptron.ipynb '](prob_notebooks/10_Perceptron.ipynb)|
 
 ## Daily Logs
 - [Day 1](day1.md)
@@ -32,6 +33,8 @@ Daily implementations from scratch, following a structured 12‑month plan to be
 - [Day 7](day7.md)
 - [Day 8](day8.md)
 - [Day 9](day9.md)
+- [Day 10](day10.md)
+
 ## How to Run
 1. Create virtual environment: `python -m venv venv`
 2. Activate: `source venv/bin/activate` (Linux/Mac) or `venv\Scripts\activate` (Windows)
